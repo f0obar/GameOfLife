@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class Controller {
-    private int scale = 100;
+    private int scale = 40;
 
     private LifeCycler lifeCycler;
 
