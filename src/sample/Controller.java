@@ -3,6 +3,7 @@ package sample;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
@@ -27,6 +28,9 @@ public class Controller {
     @FXML
     private Slider scaleSlider;
 
+    @FXML
+    private CheckBox borderlessCheckBox;
+
     private PixelWriter pixelWriter;
 
     @FXML
@@ -46,7 +50,7 @@ public class Controller {
                     pixels[x / scale][y / scale] = reader.getColor(x, y).equals(Color.BLACK);
             }
             updateBoard(pixels);
-            lifeCycler = new LifeCycler(pixels, this);
+            lifeCycler = new LifeCycler(pixels, this, borderlessCheckBox.isSelected());
             lifeCycler.start();
         }
     }
