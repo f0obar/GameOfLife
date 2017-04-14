@@ -12,9 +12,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <Slider fx:id="speedSlider" layoutX="14.0" layoutY="119.0" />
+      <Slider fx:id="speedSlider" blockIncrement="100.0" layoutX="14.0" layoutY="119.0" majorTickUnit="100.0" max="1000.0" minorTickCount="100" showTickMarks="true" snapToTicks="true" value="100.0" />
       <Text layoutX="66.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Speed:" wrappingWidth="36.75732421875" />
       <Button fx:id="startButton" layoutX="14.0" layoutY="141.0" mnemonicParsing="false" onAction="#start" prefHeight="22.0" prefWidth="140.0" text="Start" />
-      <Canvas fx:id="board" height="1000.0" layoutX="293.0" width="1000.0" />
+      <Canvas fx:id="board" height="1000.0" layoutX="293.0" onMouseClicked="#mouseMoved" onMouseDragged="#mouseMoved" width="1000.0" />
+      <Slider fx:id="scaleSlider" blockIncrement="1.0" layoutX="14.0" layoutY="245.0" max="250.0" min="1.0" minorTickCount="1" onMouseDragged="#scaleChanged" showTickMarks="true" value="25.0" />
+      <Text layoutX="33.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scale (gets rounded)" />
    </children>
 </AnchorPane>
