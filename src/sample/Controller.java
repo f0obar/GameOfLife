@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -10,6 +11,9 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+
+import java.io.*;
 
 public class Controller {
     private int scale = 40;
@@ -38,6 +42,7 @@ public class Controller {
         if(lifeCycler != null){
             lifeCycler.stop();
             lifeCycler = null;
+            startButton.setText("Start");
         } else {
             pixelWriter = board.getGraphicsContext2D().getPixelWriter();
             boolean[][] pixels = new boolean[1000 / scale][1000 / scale];
@@ -52,6 +57,7 @@ public class Controller {
             updateBoard(pixels);
             lifeCycler = new LifeCycler(pixels, this, borderlessCheckBox.isSelected());
             lifeCycler.start();
+            startButton.setText("STOP");
         }
     }
 
@@ -105,6 +111,77 @@ public class Controller {
     void initialize(){
         board.getGraphicsContext2D().setFill(Color.WHITE);
         board.getGraphicsContext2D().fillRect(0,0,1000,1000);
+    }
+
+    @FXML
+    void saveBoard(ActionEvent event) {
+        String string = "";
+        string += scale;
+
+        pixelWriter = board.getGraphicsContext2D().getPixelWriter();
+        boolean[][] pixels = new boolean[1000 / scale][1000 / scale];
+
+        Image image = board.snapshot(null,null);
+        PixelReader reader = image.getPixelReader();
+
+        for(int x = 0; x<1000; x+= scale){
+            for(int y = 0; y<1000; y+= scale)
+                string += "," +  (reader.getColor(x, y).equals(Color.BLACK)? "1" : "0");
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showSaveDialog(null);
+
+        if(file != null) {
+            try {
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write(string);
+                fileWriter.close();
+            } catch (IOException e) {System.out.print("whops, something went wrong.");}
+        }
+    }
+
+    @FXML
+    void loadBoard(ActionEvent event) {
+        if(lifeCycler == null) {
+            FileChooser fileChooser = new FileChooser();
+            File file = fileChooser.showOpenDialog(null);
+
+            if (file != null) {
+                String text = null;
+                StringBuilder stringBuffer = new StringBuilder();
+                BufferedReader bufferedReader;
+
+                try {
+                    bufferedReader = new BufferedReader(new FileReader(file));
+                    try {
+                        while ((text = bufferedReader.readLine()) != null) {
+                            stringBuffer.append(text);
+                        }
+                        bufferedReader.close();
+                    } catch (IOException e) {}
+                } catch (FileNotFoundException e) {}
+
+                String[] newBoard = stringBuffer.toString().split(",");
+
+                scale = Integer.parseInt(newBoard[0]);
+                scaleSlider.setValue(scale);
+
+                boolean[][] pixels = new boolean[1000 / scale][1000 / scale];
+                int index = 1;
+
+                for(int x = 0; x<1000 / scale; x++){
+                    for(int y = 0; y<1000  / scale; y++){
+                        pixels[x][y] = newBoard[index].equals("1");
+                        index++;
+                    }
+                }
+                updateBoard(pixels);
+            }
+        }
     }
 }
 

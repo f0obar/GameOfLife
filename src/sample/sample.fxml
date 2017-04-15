@@ -19,5 +19,7 @@
       <Slider fx:id="scaleSlider" blockIncrement="1.0" layoutX="14.0" layoutY="245.0" max="250.0" min="1.0" minorTickCount="1" onMouseDragged="#scaleChanged" showTickMarks="true" value="40.0" />
       <Text layoutX="33.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scale (gets rounded)" />
       <CheckBox fx:id="borderlessCheckBox" layoutX="50.0" layoutY="299.0" mnemonicParsing="false" text="Borderless" />
+      <Button layoutX="16.0" layoutY="941.0" mnemonicParsing="false" onAction="#saveBoard" prefHeight="22.0" prefWidth="140.0" text="Save" />
+      <Button layoutX="16.0" layoutY="964.0" mnemonicParsing="false" onAction="#loadBoard" prefHeight="22.0" prefWidth="140.0" text="Load" />
    </children>
 </AnchorPane>
